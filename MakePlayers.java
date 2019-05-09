@@ -7,6 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 //Class
 class MakePlayers {
 
+	/*****************
+	 * Shuffle int[] *
+	 *****************/
 	// Implementing Fisher–Yates shuffle. Actually The Durstenfeld shuffle
 	private void shuffle(int[] ar) {
 		// If running on Java 6 or older, use `new Random()` on RHS here
@@ -21,6 +24,9 @@ class MakePlayers {
 		System.out.println(Arrays.toString(ar));
 	}
 
+	/********************
+	 * Shuffle String[] *
+	 ********************/
 	// Implementing Fisher–Yates shuffle. Actually The Durstenfeld shuffle
 	private void shuffle(String[] ar) {
 		// If running on Java 6 or older, use `new Random()` on RHS here
@@ -35,8 +41,11 @@ class MakePlayers {
 		System.out.println(Arrays.toString(ar));
 	}
 
+	/*******
+	 * Run *
+	 *******/
 	// Create Players
-	public void run(Player[] playerArray) {
+	public void run(Player[] playerArray, Turn playerTurn) {
 		String[] names = { "Jeff", "Greg", "Scott", "Randy" };
 		int[] playOrder = new int[names.length];
 
@@ -48,6 +57,8 @@ class MakePlayers {
 		// Shuffle names and orders
 		shuffle(names);
 		shuffle(playOrder);
+		
+		playerTurn.setPlayerOrder(playOrder, names);
 
 		// Create Players
 		for (int i = 0; i < names.length; i++) {

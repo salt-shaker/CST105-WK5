@@ -1,5 +1,7 @@
 package unoSimulator;
 
+import java.io.IOException;
+
 /* ************************ */
 /* *** Uno Simulator ****** */
 /* *** By: Sashae Owens *** */
@@ -8,32 +10,33 @@ package unoSimulator;
 public class UnoSimulator {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		/**********************
-		 * Card Array Builder *
-		 **********************/
-		// Variables
+		// Create new logger
+		Logger logger = new Logger();
+
+		try {
+			logger.logWritter("Game Start ");
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+
+		// Create Cards
 		Card[] cardArray = new Card[108];
 
-		// Variables
+		// Create Players
 		Player[] playerArray = new Player[4];
 
-		// Make Cards in Deck, Create deck, and Shuffle
+		// Create Deck
 		Deck gDeck = new Deck(cardArray);
 
-		// Make Players
-		new MakePlayers().run(playerArray);
+		// Create Turn
+		Turn playerTurn = new Turn();
 
-		// Create Deck and Shuffle
-		Game uno = new Game(500);
-		uno.getPlayerOrder(playerArray);
-		uno.dealCards(playerArray, gDeck);
+		// Assign player names and set turn
+		new MakePlayers().run(playerArray, playerTurn);
 
-		/*
-		 * // Show player hand for(int y = 0; y < playerArray.length; y++) {
-		 * playerArray[y].showHand(); }
-		 */
+		// Create Game
+		Game uno = new Game(500, playerArray, gDeck, playerTurn);
 
 		/*************
 		 * Main Loop *
@@ -41,10 +44,11 @@ public class UnoSimulator {
 		while (true) {
 
 			// Call next turn
-			boolean winner = uno.newTurn(playerArray, gDeck, cardArray);
+			boolean winner = uno.newTurn(playerArray, gDeck, cardArray, playerTurn);
 
 			// If winner true, break loop
 			if (winner) {
+				System.out.println("We have a winner");
 				break;
 			}
 
@@ -54,37 +58,27 @@ public class UnoSimulator {
 }// EOC
 
 /*
- * Player Object To test probability use a random number and threshold
  * 
- * eg.
+ * Big Issue:
+ * After switching over to linked list to store arrays i couldn't figure out why
+ * the player order was off and why the loops didn't seem to match i forgot to
+ * switch from using the playerArray order to using the playerTurn order.
  * 
- * // Set the initial probability // Then roll on each turn // if roll is more
- * than probability, then player will not do that action
+ * Ended up i was tracking the player turn independently of the play objects the
+ * player object contained its own turn counter the turn object also had a turn
+ * counter this was causing a mismatch.
  * 
- * int tLoop = 20; int myValue;
+ * What i learned
  * 
- * for (int i = 0; i < tLoop; i++) { myValue = (int) (Math.random()*10)+1;
- * System.out.println(myValue); }
- * 
- */
-
-/*
- * Uno Rules http://play-k.kaserver5.org/Uno.html
- * 
- * Method in a method
- * https://www.geeksforgeeks.org/method-within-method-in-java/
- * 
- * Random shuffling of an array
- * https://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
- * 
- * Java with Us http://www.javawithus.com/tutorial/array-of-objects
- * 
- * Method in a method in java
- * https://www.geeksforgeeks.org/method-within-method-in-java/
- * 
- * Different Ways to create objects in Java
- * https://www.geeksforgeeks.org/different-ways-create-objects-java/
- * 
- * 
+ * Big projects should be planned throughly
+ * changing formats half way through is a bad idea
+ * classes help organize large code
+ * returning values is awesome
+ * method signatures are awesome
+ * extending a class is awesome
+ * Seriously, plan and make it work on paper
+ * take notes, make comments
+ * take notes, make comments even more
+ * Make blocks of code easy to identify
  * 
  */
